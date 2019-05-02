@@ -13,6 +13,7 @@ import orderWrapper from '@/events/order/wrapper';
 import UserService from '@/users/service';
 import store from '@/store';
 import Home from '@/dashboard/cd-dashboard';
+import Leads from '@/leads/cd-leads';
 import CDFManageUsers from '@/users/cdf-manage';
 import ManageRequestToJoin from '@/dojos/manage-request-to-join';
 import loggedInNavGuard from './loggedInNavGuard';
@@ -99,6 +100,12 @@ const router = new Router({
           path: '/home',
           name: 'Home',
           component: Home,
+          beforeEnter: loggedInNavGuard,
+        },
+        {
+          path: '/leads',
+          name: 'Leads',
+          component: Leads,
           beforeEnter: loggedInNavGuard,
         },
         {
