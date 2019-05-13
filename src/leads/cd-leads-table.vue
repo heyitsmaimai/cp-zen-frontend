@@ -6,16 +6,16 @@
     <table class="grid__table">
       <thead class="grid__thead">
         <th class="grid__th" 
-          v-for="key in columns"
-          @click="sortBy(key)"
-          :class="{ active: sortKey == key }">
-          {{ key | capitalize }}
-          <span class="grid__arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"></span>
+          v-for="{name: nameVal, title: titleVal} in columns"
+          @click="sortBy(nameVal)"
+          :class="{ active: sortKey == nameVal }">
+          {{ titleVal }}
+          <span class="grid__arrow" :class="sortOrders[nameVal] > 0 ? 'asc' : 'dsc'"></span>
         </th>
       </thead>
       <tbody class="grid__body">
         <tr class="grid__tr" v-for="entry in filteredData">
-          <td class="grid__td" v-for="key in columns"> {{entry[key]}}</td>
+          <td class="grid__td" v-for="{name: nameVal, title: titleVal} in columns"> {{entry[nameVal]}}</td>
         </tr>
       </tbody>
     </table>
@@ -24,14 +24,13 @@
 
 <script>
   export default {
-    name: 'grid',
+    name: 'cd-leads-table',
     props: ['data', 'columns'],
     data() {
       return {
         searchQuery: '',
         sortKey: '',
         sortOrders: {},
-        thing: null,
       };
     },
     computed: {
@@ -71,7 +70,7 @@
     created() {
       const sortOrders = {};
       this.columns.forEach((key) => {
-        sortOrders[key] = 1;
+        sortOrders[key.name] = 1;
       });
       this.sortOrders = sortOrders;
     },
@@ -90,10 +89,10 @@
   }
 
   &__table {
-    border-spacing: 0;
+/*    border-spacing: 0;
     border-style: solid;
-    border-color: @cd-orange;
-    border-width: 1px 1px 3px 1px;
+    border-color: none;
+    border-width: 1px 1px 3px 1px;*/
     padding: 0px 0px 16px;
     margin: 24px 0px 24px;
     max-width: 1150px;
@@ -106,20 +105,26 @@
     margin-bottom: 5px;
     font-size: 14px;
     font-weight: 700;
+    max-width: 150px;
   }
 
   &__th.active {
-    color: @cd-purple;
+    /*color: @cd-purple;*/
   }
 
   &__th.active .arrow {
     opacity: 1;
   }
+  &__tr {
+    max-width: 150px;
+  }
 
   &__td {
     border-bottom: 1px #f4f5f6 solid;
-    min-width: 150px;
     padding: 10px 20px;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__arrow {
@@ -134,7 +139,7 @@
   &__arrow.asc {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-bottom: 4px solid @cd-orange;
+    border-bottom: 4px solid @cd-purple;
   }
 
   &__arrow.dsc {

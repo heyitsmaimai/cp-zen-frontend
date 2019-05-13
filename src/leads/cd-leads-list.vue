@@ -1,8 +1,9 @@
 <template>
   <div class="row">
     <div class="cd-leads-list">
-      <!-- <h3 class="cd-leads-list__header">List of Leads</h3> -->
-      <grid :data="leads" :columns="gridColumns"></grid>
+      <div class="ui container">
+         <leads-table class= "cd-leads-list__table" :data="leads" :columns="columns"></leads-table>
+      </div>
     </div>
   </div>
 </template>
@@ -10,32 +11,31 @@
 <script>
   import { mapGetters } from 'vuex';
   import LeadsService from './service';
-  import Grid from './grid';
-  import Tble from './tble';
+  import LeadsTable from './cd-leads-table';
 
   export default {
     name: 'cd-leads-list',
     data() {
       return {
         allLeads: [],
-        gridColumns: ['Name', 'Country', 'Email', 'Created', 'Updated', 'Completed', 'Priority'],
+        columns: [{ name: 'name', title: 'Name' }, { name: 'country', title: 'Country' }, { name: 'email', title: 'Email' }, { name: 'dojoEmail', title: 'Dojo Email' }, { name: 'created', title: 'Created' }, { name: 'updated', title: 'Updated' }, { name: 'completed', title: 'Completed' }, { name: 'score', title: 'Score' }],
       };
     },
     components: {
-      Grid,
-      Tble,
+      LeadsTable,
     },
     computed: {
       ...mapGetters(['loggedInUser']),
       leads() {
         return this.allLeads.map(lead => (Object.assign({
-          Name: lead.dojoName,
-          Country: lead.alpha2,
-          Email: lead.email,
-          DojoEmail: lead.dojoEmail,
-          Created: lead.createdAt.slice(0, 10),
-          Updated: lead.updatedAt.slice(0, 10),
-          Completed: lead.completed,
+          id: lead.id,
+          name: lead.dojoName,
+          country: lead.alpha2,
+          email: lead.email,
+          dojoEmail: lead.dojoEmail,
+          created: lead.createdAt.slice(0, 10),
+          updated: lead.updatedAt.slice(0, 10),
+          completed: lead.completed,
         })));
       },
     },
@@ -67,6 +67,8 @@
     display: flex;
     &__header {
       padding: 16px;
+    }
+    &__table {
     }
   }
 </style>
