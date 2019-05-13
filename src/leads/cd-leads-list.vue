@@ -1,9 +1,7 @@
 <template>
   <div class="row">
     <div class="cd-leads-list">
-      <div class="ui container">
-         <leads-table class= "cd-leads-list__table" :data="leads" :columns="columns"></leads-table>
-      </div>
+      <leads-table class= "cd-leads-list__table" :data="leads" :columns="columns"></leads-table>
     </div>
   </div>
 </template>

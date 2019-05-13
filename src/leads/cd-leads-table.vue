@@ -1,21 +1,26 @@
 <template>
-<!-- <form id="search">
-  Search <input name="query" v-model="searchQuery">
-</form> -->
-  <div class="grid__template">
-    <table class="grid__table">
-      <thead class="grid__thead">
-        <th class="grid__th" 
+  <div class="cd-leads-table__template">
+    <div class="cd-leads-table__search">
+      <label class="cd-child-ticket__label">Search:</label>
+      <div>
+        <input class="cd-leads-table__searchbox form-control" v-model="searchQuery" type="text" name="query"/>
+      </div>
+    </div>
+    <table class="cd-leads-table__table">
+      <thead class="cd-leads-table__thead">
+        <th class="cd-leads-table__th"
           v-for="{name: nameVal, title: titleVal} in columns"
           @click="sortBy(nameVal)"
           :class="{ active: sortKey == nameVal }">
           {{ titleVal }}
-          <span class="grid__arrow" :class="sortOrders[nameVal] > 0 ? 'asc' : 'dsc'"></span>
+          <span class="cd-leads-table__arrow" :class="sortOrders[nameVal] > 0 ? 'asc' : 'dsc'"></span>
         </th>
+        <th class="cd-leads-table__th">Application</th>
       </thead>
-      <tbody class="grid__body">
-        <tr class="grid__tr" v-for="entry in filteredData">
-          <td class="grid__td" v-for="{name: nameVal, title: titleVal} in columns"> {{entry[nameVal]}}</td>
+      <tbody class="cd-leads-table__body">
+        <tr class="cd-leads-table__tr" v-for="entry in filteredData">
+          <td class="cd-leads-table__td" v-for="{name: nameVal, title: titleVal} in columns"> {{entry[nameVal]}}</td>
+          <td class="cd-leads-table__td">Yeet</td>
         </tr>
       </tbody>
     </table>
@@ -81,11 +86,27 @@
 @import "~@coderdojo/cd-common/common/_colors";
 @import "../common/styles/cd-primary-button.less";
 @import "../common/variables";
-.grid {
+.cd-leads-table {
   &__template {
     display: flex;
     flex-direction: column;
-    max-width: 1150px;
+    max-width: 100%;
+  }
+
+  &__search {
+    margin: 24px 0px 0px 0px;
+    max-width: 25%;
+  }
+
+  &__label {
+    margin-bottom: 5px;
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__searchbox {
+    display: inline;
   }
 
   &__table {
@@ -95,12 +116,11 @@
     border-width: 1px 1px 3px 1px;*/
     padding: 0px 0px 16px;
     margin: 24px 0px 24px;
-    max-width: 1150px;
+    max-width: 100%;
 }
 
   &__th {
     background-color: #f4f5f6;
-    /*color: rgba(255,255,255,0.66);*/
     padding: 10px 20px;
     margin-bottom: 5px;
     font-size: 14px;
@@ -116,13 +136,12 @@
     opacity: 1;
   }
   &__tr {
-    max-width: 150px;
   }
 
   &__td {
     border-bottom: 1px #f4f5f6 solid;
     padding: 10px 20px;
-    max-width: 150px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
