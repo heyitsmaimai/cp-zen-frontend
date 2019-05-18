@@ -118,6 +118,16 @@ exports.register = function (server, options, next) {
         path: 'index.html'
       }
     }
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/leads/{leadId}',
+    handler: {
+      file: {
+        path: 'index.html'
+      }
+    }
   });  
 
   server.route({

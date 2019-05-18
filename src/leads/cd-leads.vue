@@ -1,6 +1,6 @@
 <template>
   <div class="cd-leads">
-    <leads-header/>
+    <leads-header :title="header"/>
     <leads-list/>
   </div>
 </template>
@@ -13,6 +13,7 @@
     name: 'Leads',
     data() {
       return {
+        header: 'Leads Dashboard',
       };
     },
     components: {

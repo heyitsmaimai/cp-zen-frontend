@@ -16,7 +16,7 @@
     data() {
       return {
         allLeads: [],
-        columns: [{ name: 'name', title: 'Name' }, { name: 'country', title: 'Country' }, { name: 'email', title: 'Email' }, { name: 'dojoEmail', title: 'Dojo Email' }, { name: 'created', title: 'Created' }, { name: 'updated', title: 'Updated' }, { name: 'completed', title: 'Completed' }, { name: 'score', title: 'Score' }],
+        columns: [{ name: 'name', title: 'Name' }, { name: 'country', title: 'Country' }, { name: 'user', title: 'User' }, { name: 'dojoEmail', title: 'Dojo Email' }, { name: 'updated', title: 'Last Updated' }, { name: 'score', title: 'Score' }],
       };
     },
     components: {
@@ -25,30 +25,39 @@
     computed: {
       ...mapGetters(['loggedInUser']),
       leads() {
-        return this.allLeads.map(lead => (Object.assign({
+        return this.allLeads.map(lead => ({
           id: lead.id,
           name: lead.dojoName,
           country: lead.alpha2,
-          email: lead.email,
+          user: lead.email,
           dojoEmail: lead.dojoEmail,
           created: lead.createdAt.slice(0, 10),
           updated: lead.updatedAt.slice(0, 10),
           completed: lead.completed,
-        })));
+          dojoId: lead.dojoId,
+          score: lead.score,
+        }));
       },
     },
     methods: {
-      getAllLeads() {
+      async getAllLeads() {
         const query = {
           deleted: 0,
         };
-        LeadsService.getLeads(query).then((response) => {
-          this.allLeads = response.body;
-        });
+        this.allLeads = (await LeadsService.getLeads(query)).body;
+      },
+      async mapScores() {
+        this.allLeads = await Promise.all(this.allLeads.map(async (lead) => {
+          const score = (await LeadsService.getLeadScore(lead.id)).body.score;
+          // eslint-disable-next-line no-param-reassign
+          lead.score = score;
+          return lead;
+        }));
       },
     },
-    created() {
-      this.getAllLeads();
+    async created() {
+      await this.getAllLeads();
+      await this.mapScores();
     },
   };
 </script>
@@ -63,10 +72,8 @@
     min-height: 432px;
     /*width: 940px;*/
     display: flex;
-    &__header {
-      padding: 16px;
-    }
-    &__table {
-    }
+    align-items: center;
+    justify-content: center;
+    &__table {}
   }
 </style>

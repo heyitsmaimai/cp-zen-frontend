@@ -1,29 +1,21 @@
 <template>
-  <div class="cd-leads-table__template">
-    <div class="cd-leads-table__search">
-      <label class="cd-child-ticket__label">Search:</label>
-      <div>
-        <input class="cd-leads-table__searchbox form-control" v-model="searchQuery" type="text" name="query"/>
-      </div>
-    </div>
-    <table class="cd-leads-table__table">
-      <thead class="cd-leads-table__thead">
-        <th class="cd-leads-table__th"
+  <div class="cd-leads-application-table__template">
+    <h2 class="cd-leads-application-table__header">{{ title }}</h2>
+    <table class="cd-leads-application-table__table">
+      <!-- <thead class="cd-leads-application-table__thead"> -->
+        <!-- <th class="cd-leads-application-table__th">Champion</th> -->
+<!--         <th class="cd-leads-application-table__th"
           v-for="{name: nameVal, title: titleVal} in columns"
           @click="sortBy(nameVal)"
           :class="{ active: sortKey == nameVal }">
           {{ titleVal }}
-          <span class="cd-leads-table__arrow" :class="sortOrders[nameVal] > 0 ? 'asc' : 'dsc'"></span>
-        </th>
-        <th class="cd-leads-table__th">Application</th>
-      </thead>
-      <tbody class="cd-leads-table__body">
-        <tr class="cd-leads-table__tr" v-for="entry in filteredData">
-          <td class="cd-leads-table__td" v-for="{name: nameVal, title: titleVal} in columns"> {{ entry[nameVal] }}</td>
-          <td class="cd-leads-table__td">
-            <a class="cd-leads-table__view" @click="viewApplication(entry.id)">View <span><i class="fa fa-eye" aria-hidden="true"></i></span></a>
-            <a class="cd-leads-table__edit" :href="`/dashboard/edit-dojo/${entry.dojoId}`">Edit <span><i class="fa fa-pencil" aria-hidden="true"></i></span></a>
-          </td>
+          <span class="cd-leads-application-table__arrow" :class="sortOrders[nameVal] > 0 ? 'asc' : 'dsc'"></span>
+        </th> -->
+      <!-- </thead> -->
+      <tbody class="cd-leads-application-table__body">
+        <tr class="cd-leads-application-table__tr">
+          <th class="cd-leads-application-table__th">Key</th>
+          <td class="cd-leads-application-table__td">Value</td>
         </tr>
       </tbody>
     </table>
@@ -32,8 +24,8 @@
 
 <script>
   export default {
-    name: 'cd-leads-table',
-    props: ['data', 'columns'],
+    name: 'cd-leads-application-table',
+    props: ['title', 'data', 'columns'],
     data() {
       return {
         searchQuery: '',
@@ -74,7 +66,7 @@
         this.sortKey = key;
         this.sortOrders[key] = this.sortOrders[key] * -1;
       },
-      viewApplication(leadId) {
+      submitBooking(leadId) {
         this.$router.push({ name: 'LeadApplication', params: { leadId } });
       },
     },
@@ -92,11 +84,15 @@
 @import "~@coderdojo/cd-common/common/_colors";
 @import "../common/styles/cd-primary-button.less";
 @import "../common/variables";
-.cd-leads-table {
+.cd-leads-application-table {
   &__template {
     display: flex;
     flex-direction: column;
     max-width: 100%;
+  }
+
+  &__header {
+    margin: 45px 0 @margin 0;
   }
 
   &__search {
@@ -150,31 +146,6 @@
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  &__view {
-    margin-right: 5px;
-  }
-
-  &__arrow {
-    display: inline-block;
-    vertical-align: middle;
-    width: 0;
-    height: 0;
-    margin-left: 5px;
-    opacity: 0.66;
-  }
-
-  &__arrow.asc {
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 4px solid @cd-purple;
-  }
-
-  &__arrow.dsc {
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid @cd-orange;
   }
 }
 </style>

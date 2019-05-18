@@ -14,6 +14,7 @@ import UserService from '@/users/service';
 import store from '@/store';
 import Home from '@/dashboard/cd-dashboard';
 import Leads from '@/leads/cd-leads';
+import LeadApplication from '@/leads/cd-leads-application';
 import CDFManageUsers from '@/users/cdf-manage';
 import ManageRequestToJoin from '@/dojos/manage-request-to-join';
 import loggedInNavGuard from './loggedInNavGuard';
@@ -107,6 +108,13 @@ const router = new Router({
           name: 'Leads',
           component: Leads,
           beforeEnter: loggedInNavGuard,
+        },
+        {
+          path: 'leads/:leadId',
+          name: 'LeadApplication',
+          component: LeadApplication,
+          beforeEnter: loggedInNavGuard,
+          props: true,
         },
         {
           path: 'events/:eventId',

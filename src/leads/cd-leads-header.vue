@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="cd-leads-header">
-      <h1 class="cd-leads-header__header">Leads Dashboard</h1>
+      <h1 class="cd-leads-header__header">{{ title }}</h1>
     </div>
   </div>
 </template>
@@ -9,6 +9,7 @@
 <script>
   export default {
     name: 'cd-leads-header',
+    props: ['title'],
   };
 </script>
 

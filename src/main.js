@@ -5,6 +5,7 @@ import VueResource from 'vue-resource';
 import VeeValidate from 'vee-validate';
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueAnalytics from 'vue-analytics';
+import VueTable from 'vue-tables-2';
 import PasswordValidator from '@/common/directives/cd-password-validator';
 import titleDirective from '@/common/directives/title';
 import gaTrackClickDirective from '@/common/directives/cd-ga-track-click';
@@ -35,6 +36,7 @@ Vue.use(VueAnalytics, {
   id: process.env.GOOGLE_ANALYTICS_PROPERTY_ID,
   router,
 });
+Vue.use(VueTable.ClientTable, {}, true);
 Vue.directive('title', titleDirective);
 Vue.directive('ga-track-click', gaTrackClickDirective);
 Vue.directive('ga-track-exit-nav', gaTrackExitNavDirective);
