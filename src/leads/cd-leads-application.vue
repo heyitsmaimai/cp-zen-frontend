@@ -28,11 +28,23 @@
         header: 'Review Application',
         leadApplication: [],
         champion: {},
-        dojo: {},
-        venue: {},
-        team: {},
-        appInfo: {},
-        prediction: {},
+        dojo: { name: '', email: '' },
+        venue: {
+          location: '',
+          city: '',
+          country: '',
+          type: '',
+          private: '',
+        },
+        team: { team: 'No' },
+        appInfo: {
+          created: '',
+          updated: '',
+          submitted: 'No',
+          submittedAt: '',
+          charter: 'No',
+        },
+        prediction: { score: '', priority: '' },
         score: null,
       };
     },
@@ -78,6 +90,10 @@
         this.score = score;
       },
       setSubs() {
+        this.prediction = {
+          score: this.score,
+          priority: this.priority,
+        };
         const application = this.leadApplication.application;
         this.champion = {
           name: `${application.champion.firstName} ${application.champion.lastName}`,
@@ -87,16 +103,16 @@
           phone: application.champion.phone,
           reference: application.champion.reference,
         };
-        this.dojo = {
-          name: application.dojo.name,
-          email: application.dojo.requestEmail ? 'Requested' : application.dojo.email,
-        };
         this.venue = {
           location: application.venue.address1,
           city: application.venue.place.nameWithHierarchy,
           country: application.venue.country.countryName,
           type: application.venue.type,
           private: application.venue.private ? 'Yes' : 'No',
+        };
+        this.dojo = {
+          name: application.dojo.name,
+          email: application.dojo.requestEmail ? 'Requested' : application.dojo.email,
         };
         this.team = { team: application.team.src.staff ? 'Yes' : 'No' };
         this.appInfo = {
@@ -105,10 +121,6 @@
           submitted: this.leadApplication.completed ? 'Yes' : 'No',
           submittedAt: this.leadApplication.completedAt ? `${this.leadApplication.completedAt.slice(0, 10)} ${this.leadApplication.completedAt.slice(11, 16)}` : '',
           charter: application.charter.isValid ? 'Yes' : 'No',
-        };
-        this.prediction = {
-          score: this.score,
-          priority: this.priority,
         };
       },
     },
