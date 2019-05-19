@@ -1,28 +1,28 @@
 <template>
-  <div class="cd-leads-table__template">
-    <div class="cd-leads-table__search">
-      <label class="cd-child-ticket__label">Search:</label>
+  <div class="cd-leads-list-table__template">
+    <div class="cd-leads-list-table__search">
+      <label class="cd-leads-list-table__label">Search:</label>
       <div>
-        <input class="cd-leads-table__searchbox form-control" v-model="searchQuery" type="text" name="query"/>
+        <input class="cd-leads-list-table__searchbox form-control" v-model="searchQuery" type="text" name="query"/>
       </div>
     </div>
-    <table class="cd-leads-table__table">
-      <thead class="cd-leads-table__thead">
-        <th class="cd-leads-table__th"
+    <table class="cd-leads-list-table__table">
+      <thead class="cd-leads-list-table__thead">
+        <th class="cd-leads-list-table__th"
           v-for="{name: nameVal, title: titleVal} in columns"
           @click="sortBy(nameVal)"
           :class="{ active: sortKey == nameVal }">
           {{ titleVal }}
-          <span class="cd-leads-table__arrow" :class="sortOrders[nameVal] > 0 ? 'asc' : 'dsc'"></span>
+          <span class="cd-leads-list-table__arrow" :class="sortOrders[nameVal] > 0 ? 'asc' : 'dsc'"></span>
         </th>
-        <th class="cd-leads-table__th">Application</th>
+        <th class="cd-leads-list-table__th">Application</th>
       </thead>
-      <tbody class="cd-leads-table__body">
-        <tr class="cd-leads-table__tr" v-for="entry in filteredData">
-          <td class="cd-leads-table__td" v-for="{name: nameVal, title: titleVal} in columns"> {{ entry[nameVal] }}</td>
-          <td class="cd-leads-table__td">
-            <a class="cd-leads-table__view" @click="viewApplication(entry.id)">View <span><i class="fa fa-eye" aria-hidden="true"></i></span></a>
-            <a class="cd-leads-table__edit" :href="`/dashboard/edit-dojo/${entry.dojoId}`">Edit <span><i class="fa fa-pencil" aria-hidden="true"></i></span></a>
+      <tbody class="cd-leads-list-table__body">
+        <tr class="cd-leads-list-table__tr" v-for="entry in filteredData">
+          <td class="cd-leads-list-table__td" v-for="{name: nameVal, title: titleVal} in columns"> {{ entry[nameVal] }}</td>
+          <td class="cd-leads-list-table__td">
+            <a class="cd-leads-list-table__link" @click="viewApplication(entry.id)">View <span><i class="fa fa-eye" aria-hidden="true"></i></span></a >
+            <a  class="cd-leads-list-table__link" v-if="!entry.completed" :href="`dashboard/start-dojo?id=${entry.id}`">Edit <span><i class="fa fa-pencil" aria-hidden="true"></i></span></a >
           </td>
         </tr>
       </tbody>
@@ -32,7 +32,7 @@
 
 <script>
   export default {
-    name: 'cd-leads-table',
+    name: 'cd-leads-list-table',
     props: ['data', 'columns'],
     data() {
       return {
@@ -64,11 +64,6 @@
         return data;
       },
     },
-    filters: {
-      capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-      },
-    },
     methods: {
       sortBy(key) {
         this.sortKey = key;
@@ -77,12 +72,16 @@
       viewApplication(leadId) {
         this.$router.push({ name: 'LeadApplication', params: { leadId } });
       },
+      initializeSortOrders(columns) {
+        const sortOrders = {};
+        columns.forEach((key) => {
+          sortOrders[key.name] = 1;
+        });
+        return sortOrders;
+      },
     },
     created() {
-      const sortOrders = {};
-      this.columns.forEach((key) => {
-        sortOrders[key.name] = 1;
-      });
+      const sortOrders = this.initializeSortOrders(this.columns);
       this.sortOrders = sortOrders;
     },
   };
@@ -92,7 +91,7 @@
 @import "~@coderdojo/cd-common/common/_colors";
 @import "../common/styles/cd-primary-button.less";
 @import "../common/variables";
-.cd-leads-table {
+.cd-leads-list-table {
   &__template {
     display: flex;
     flex-direction: column;
@@ -152,8 +151,13 @@
     text-overflow: ellipsis;
   }
 
-  &__view {
+  &__link {
     margin-right: 5px;
+    color: @link-color;
+    cursor: pointer;
+    &:hover {
+      color: @link-hover-color;
+    }
   }
 
   &__arrow {

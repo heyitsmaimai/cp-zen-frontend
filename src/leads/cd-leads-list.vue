@@ -9,14 +9,14 @@
 <script>
   import { mapGetters } from 'vuex';
   import LeadsService from './service';
-  import LeadsTable from './cd-leads-table';
+  import LeadsTable from './cd-leads-list-table';
 
   export default {
     name: 'cd-leads-list',
     data() {
       return {
         allLeads: [],
-        columns: [{ name: 'name', title: 'Name' }, { name: 'country', title: 'Country' }, { name: 'user', title: 'User' }, { name: 'dojoEmail', title: 'Dojo Email' }, { name: 'updated', title: 'Last Updated' }, { name: 'score', title: 'Score' }],
+        columns: [{ name: 'name', title: 'Name' }, { name: 'country', title: 'Country' }, { name: 'user', title: 'User' }, { name: 'dojoEmail', title: 'Dojo Email' }, { name: 'updated', title: 'Last Updated' }, { name: 'priority', title: 'Priority' }],
       };
     },
     components: {
@@ -36,6 +36,7 @@
           completed: lead.completed,
           dojoId: lead.dojoId,
           score: lead.score,
+          priority: lead.priority,
         }));
       },
     },
@@ -51,8 +52,17 @@
           const score = (await LeadsService.getLeadScore(lead.id)).body.score;
           // eslint-disable-next-line no-param-reassign
           lead.score = score;
+          // eslint-disable-next-line no-param-reassign
+          lead.priority = this.getPriority(score);
           return lead;
         }));
+      },
+      getPriority(score) {
+        if (score < 20) {
+          return 'Small';
+        } else if (score >= 20 && score < 70) {
+          return 'Med';
+        } return 'High';
       },
     },
     async created() {
@@ -74,6 +84,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    &__table {}
+    &__table {
+      align-self: flex-start;
+    }
   }
 </style>
